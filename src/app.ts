@@ -10,7 +10,7 @@ const app = express();
 app.use(router);
 const port = config.get("port");
 
-app.listen(() => {
+app.listen(port, () => {
   log.info(`App started at http://localhost:${port}`);
   connectToDB();
 });
