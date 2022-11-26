@@ -15,7 +15,7 @@
     "config": "^3.3.8",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "express": "^5.0.0-alpha.8",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.7.3",
