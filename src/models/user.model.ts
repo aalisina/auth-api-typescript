@@ -1,6 +1,19 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
+import {
+  getModelForClass,
+  modelOptions,
+  prop,
+  Severity,
+} from "@typegoose/typegoose";
 import { nanoid } from "nanoid";
 
+@modelOptions({
+  schemaOptions: {
+    timestamps: true,
+  },
+  options: {
+    allowMixed: Severity.ALLOW, // props can have two types, can be nullable for example
+  },
+})
 export class User {
   // inside prop mongoose options
   @prop({ lowercase: true, required: true, unique: true })
@@ -19,7 +32,7 @@ export class User {
   verificationCode: string;
 
   @prop()
-  passwordResetCode: string;
+  passwordResetCode: string | null;
 
   @prop({ default: false })
   verified: boolean;
