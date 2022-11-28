@@ -6,7 +6,7 @@ import {
   prop,
   Severity,
 } from "@typegoose/typegoose";
-import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from "uuid";
 import argon2 from "argon2";
 import log from "../utils/logger";
 
@@ -42,7 +42,7 @@ export class User {
   @prop({ required: true })
   password: string;
 
-  @prop({ required: true, default: () => nanoid() })
+  @prop({ required: true, default: () => uuidv4() })
   verificationCode: string;
 
   @prop()
