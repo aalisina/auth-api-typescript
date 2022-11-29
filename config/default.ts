@@ -3,8 +3,8 @@ export default {
   dbUri: "mongodb://localhost:27017/auth-api",
   logLevel: "info",
   smtp: {
-    user: "icqskc5mxzf3bwct@ethereal.email",
-    pass: "mVSU79SbF3WmvGqy4V",
+    user: "a5svnklpvm25d34x@ethereal.email",
+    pass: "bPy2rasppnKK6Sux1N",
     host: "smtp.ethereal.email",
     port: 587,
     secure: false, // set to true when deploy
