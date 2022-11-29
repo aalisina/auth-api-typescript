@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserInput } from "../schemas/user.schema";
 import { createUser } from "../services/user.service";
+import sendEmail from "../utils/mailer";
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput>,
@@ -10,6 +11,12 @@ export async function createUserHandler(
 
   try {
     const user = await createUser(body);
+    await sendEmail({
+      from: "test@test.com",
+      to: user.email,
+      subject: "Please verify your account",
+      text: `Verification code: ${user.verificationCode} Id: ${user._id}`,
+    });
     return res.send("User successfully created"); // status will default to 200
   } catch (err: any) {
     if (err.code === 11000) {
