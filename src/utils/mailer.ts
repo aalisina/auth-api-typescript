@@ -29,7 +29,9 @@ async function sendEmail(payload: SendMailOptions) {
   transporter.sendMail(payload, (err, info) => {
     if (err) {
       // log.error(err, "Error while sending email");
+      // Throwing an error doesn't serve here. User gets created anyways
       throw new Error(String(err));
+      
     }
     log.info(`Preview url: ${nodemailer.getTestMessageUrl(info)}`);
   });
