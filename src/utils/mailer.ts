@@ -28,8 +28,8 @@ async function sendEmail(payload: SendMailOptions) {
   // don't put transporter here
   transporter.sendMail(payload, (err, info) => {
     if (err) {
-      log.error(err, "Error while sending email");
-      return;
+      // log.error(err, "Error while sending email");
+      throw new Error(String(err));
     }
     log.info(`Preview url: ${nodemailer.getTestMessageUrl(info)}`);
   });
