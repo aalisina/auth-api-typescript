@@ -42,7 +42,7 @@ export async function verifyUserHandler(
   req: Request<VerifyUserInput>,
   res: Response
 ) {
-  const { id, verifificationCode } = req.params;
+  const { id, verificationCode } = req.params;
 
   // find the user by id
   const msg = "Could not verify user.";
@@ -55,7 +55,7 @@ export async function verifyUserHandler(
     return res.send("User is already verified. ");
   }
   // check whether verification code is correct
-  if (user.verificationCode === verifificationCode) {
+  if (user.verificationCode === verificationCode) {
     user.verified = true;
     await user.save();
     res.send("User successfully verified.");
