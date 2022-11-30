@@ -15,7 +15,7 @@ router.post(
 );
 
 router.post(
-  "/api/user/verify/:id/:verificationCode",
+  "/api/users/verify/:id/:verificationCode",
   validateResource(verifyUserSchema),
   verifyUserHandler
 );
