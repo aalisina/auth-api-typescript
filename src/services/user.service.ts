@@ -8,6 +8,6 @@ export async function deleteUserById(userId: Partial<User>) {
   return UserModel.deleteOne({ _id: userId });
 }
 
-export async function findUserById(userId: Partial<User>) {
+export async function findUserById(userId: string) {
   return UserModel.findById(userId);
 }
