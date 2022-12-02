@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   CreateUserInput,
   ForgotPasswordInput,
+  ResetPasswordInput,
   VerifyUserInput,
 } from "../schemas/user.schema";
 import {
@@ -100,4 +101,29 @@ export async function forgotPasswordHandler(
   });
   log.debug("Password reset email sent to user.");
   return res.send(msg);
+}
+
+export async function resetPasswordHandler(
+  req: Request<ResetPasswordInput["params"], {}, ResetPasswordInput["body"]>,
+  res: Response
+) {
+  const { id, passwordResetCode } = req.params;
+
+  const { password } = req.body;
+
+  const user = await findUserById(id);
+
+  if (
+    !user ||
+    !user.passwordResetCode ||
+    user.passwordResetCode !== passwordResetCode
+  ) {
+    res.status(400).send("Could not reset user password.");
+  }
+
+  user.passwordResetCode = null;
+  user.password = password;
+  await user.save();
+
+  return res.send("Updated password.");
 }
