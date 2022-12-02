@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 import {
   CreateUserInput,
   ForgotPasswordInput,
@@ -73,7 +74,30 @@ export async function forgotPasswordHandler(
   req: Request<{}, {}, ForgotPasswordInput>,
   res: Response
 ) {
+  const msg =
+    "If a user with this email is registered, you will receive a password reset email";
   const { email } = req.body;
 
   const user = await findUserByEmail(email);
+  if (!user) {
+    log.debug(`User with email ${email} does not exist`);
+    return res.send(msg);
+  }
+  if (!user.verified) {
+    return res.send("User is not verified.");
+  }
+
+  const passwordResetCode = uuidv4();
+
+  user.passwordResetCode = passwordResetCode;
+  await user.save();
+
+  await sendEmail({
+    from: "test@test.com",
+    to: user.email,
+    subject: "Password reset code",
+    text: `Password reset code: ${passwordResetCode} Id: ${user._id}`,
+  });
+  log.debug("Password reset email sent to user.");
+  return res.send(msg);
 }
