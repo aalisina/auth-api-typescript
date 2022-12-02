@@ -38,7 +38,7 @@ export const verifyUserSchema = object({
   }),
 });
 
-const resetPasswordSchema = object({
+export const resetPasswordSchema = object({
   params: object({
     id: string(),
     passwordResetCode: string(),
