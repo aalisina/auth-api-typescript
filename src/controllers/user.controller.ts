@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
-import { CreateUserInput, VerifyUserInput } from "../schemas/user.schema";
+import {
+  CreateUserInput,
+  ForgotPasswordInput,
+  VerifyUserInput,
+} from "../schemas/user.schema";
 import {
   createUser,
   deleteUserById,
+  findUserByEmail,
   findUserById,
 } from "../services/user.service";
 import log from "../utils/logger";
@@ -62,4 +67,13 @@ export async function verifyUserHandler(
   }
   // Verification code incorrect
   return res.send(msg);
+}
+
+export async function forgotPasswordHandler(
+  req: Request<{}, {}, ForgotPasswordInput>,
+  res: Response
+) {
+  const { email } = req.body;
+
+  const user = await findUserByEmail(email);
 }

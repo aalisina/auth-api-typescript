@@ -11,3 +11,7 @@ export async function deleteUserById(userId: Partial<User>) {
 export async function findUserById(userId: string) {
   return UserModel.findById(userId);
 }
+export async function findUserByEmail(email: string) {
+  // Add an index to make the lookup quicker
+  return UserModel.findOne({ email });
+}
