@@ -1,6 +1,7 @@
 // All the funcionalities for Google Oauth, FB etc go here and not in the user controller
 import { Request, Response } from "express";
 import { CreateSessionInput } from "../schemas/auth.schema";
+import { signAccessToken, signRefreshToken } from "../services/auth.service";
 import { findUserByEmail } from "../services/user.service";
 
 export async function createSessionHandler(
@@ -27,6 +28,12 @@ export async function createSessionHandler(
   // when password is valid
 
   // sign an access token
+  const accessToken = signAccessToken(user);
   // sign a refresh token
+  const refreshToken = await signRefreshToken({ userId: user._id });
   // send the tokens
+  return res.send({
+    accessToken,
+    refreshToken,
+  });
 }
