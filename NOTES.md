@@ -14,6 +14,6 @@ Git
 Git init
 
 https://www.youtube.com/watch?v=qylGaki0JhY&t=1118s
-1:30:21
+1:43:21
 
 Works fine if you manually pass in the id and reset codes as params, problem is in postman
