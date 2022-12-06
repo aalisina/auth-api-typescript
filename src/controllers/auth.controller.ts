@@ -1,8 +1,14 @@
 // All the funcionalities for Google Oauth, FB etc go here and not in the user controller
 import { Request, Response } from "express";
+import { get } from "lodash";
 import { CreateSessionInput } from "../schemas/auth.schema";
-import { signAccessToken, signRefreshToken } from "../services/auth.service";
-import { findUserByEmail } from "../services/user.service";
+import {
+  findSessionById,
+  signAccessToken,
+  signRefreshToken,
+} from "../services/auth.service";
+import { findUserByEmail, findUserById } from "../services/user.service";
+import { verifyJwt } from "../utils/jwt";
 
 export async function createSessionHandler(
   req: Request<{}, {}, CreateSessionInput>,
@@ -36,4 +42,30 @@ export async function createSessionHandler(
     accessToken,
     refreshToken,
   });
+}
+export async function refreshAccessTokenHandler(req: Request, res: Response) {
+  const refreshToken = get(req, "headers.x-refresh")?.toString() || "";
+  const decoded = verifyJwt<{ session: string }>(
+    refreshToken,
+    "refreshTokenPublicKey"
+  );
+
+  if (!decoded) {
+    return res.status(401).send("Could not refresh access token.");
+  }
+
+  const session = await findSessionById(decoded.session);
+
+  if (!session || !session.valid) {
+    return res.status(401).send("Could not refresh access token.");
+  }
+
+  const user = await findUserById(String(session.user));
+  if (!user) {
+    return res.status(401).send("Could not refresh access token.");
+  }
+
+  const accessToken = signAccessToken(user);
+
+  return res.send({ accessToken });
 }
